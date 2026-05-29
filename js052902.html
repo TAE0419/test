@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./reset.css"/>
+    <style>
+        body{ 
+            height: 100vh;
+            display: flex; justify-content: center; align-items: center;flex-direction: column;
+            background: radial-gradient(circle,rgba(255, 153, 153, 1) 0%, rgba(255, 188, 176, 1) 30%, rgba(255, 239, 237, 1) 61%, rgba(255, 255, 255, 1) 93%);
+        }
+        h1{font-size: 100px; font-weight: 100; color: white;}
+        .wrap{
+            width: 60%;height: 60vh; background-color: rgb(255, 255, 255); border-radius: 60px;
+            display: flex; justify-content: center; align-items: center; flex-direction: column; padding: 20px;
+            box-shadow: inset 6px 6px 20px rgba(58, 0, 0, 0.3);
+        }
+        .outBox{
+            width: 100%; height: 80%;
+            display: flex; justify-content: center; align-items: center;
+        }
+        .inBox{width: 50%; height: 100%; display: flex;}
+        .textBox{
+            width: 40%; height: 100%;
+            display: flex; justify-content: center; align-items:end; flex-direction: column; gap: 10px;
+        }
+        .textBox>h2{font-size: 20px; font-weight: 400; color: rgb(160, 149, 149);}
+        .textBox2>p{font-size: 20px; font-weight: 400; color: rgb(37, 35, 35);}
+        .textBox>h1{font-size: 55px; font-weight: bold; color: rgb(37, 35, 35);}
+        .imgBox{width: 60%;height: 100%; display: flex; justify-content: center;align-items: center;}
+        img{width: 100%; height: 70%; object-fit: cover;}
+
+        span{width: 2px; height: 60%; margin-left: 70px; background-color: rgb(199, 198, 198);}
+        .textBox2{
+            width:30%; height: 100%;;
+            display: flex; justify-content: center; align-items: center;
+        }
+
+        .btnBox{
+            width: 100%;height: 20%; 
+            display: flex; justify-content: center; align-items: center; gap: 30px;
+        }
+        button{
+            width: 21%; height: 80%; background-color: rgb(255, 188, 176);
+            border-radius: 100px;color: white;
+            font-size: 20px;
+            box-shadow: 6px 6px 10px rgba(58, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <h1>날씨 정보</h1>
+    <div class="wrap">
+        <div class="outBox">
+            <div class="inBox">
+                <div class="textBox">
+                    <h2 class="local"></h2>
+                    <h1 class="sum"></h1>
+                </div>
+                <div class="imgBox">
+                <img alt="날씨아이콘"/>
+                </div>
+            </div>
+            <span></span>
+            <div class="textBox2">
+                <p class="info"></p>
+            </div>
+        </div>
+        <div class="btnBox">
+            <button onclick="seoulWeather()">서울</button>
+            <button onclick="busanWeather()">부산</button>
+            <button onclick="incheonWeather()">인천</button>
+            <button onclick="daeguWeather()">대구</button>
+        </div>
+    </div>
+    <script>
+        let local = document.querySelector('.local')
+        let info = document.querySelector('.info')
+        let sum = document.querySelector('.sum')
+        let img = document.querySelector('img')
+        const API_KEY = 'b707a737ce413a08a5cc7db5059b6e8c'
+
+        async function seoulWeather(){
+            const cityname = 'seoul'
+            let res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityname}&appid=${API_KEY}&units=metric&lang=kr`)
+            let data = await res.json()
+            console.log(data)
+
+            local.innerHTML = `서울(${cityname}) 날씨 `
+            sum.innerHTML = `"${data.weather[0].description}"`
+            info.innerHTML = `<strong>현재온도 - ${data.main.temp}Cº</strong> <br> 최고온도 - ${data.main.temp_max}Cº <br> 최저온도 - ${data.main.temp_min}Cº <br> <br>
+                풍속 - ${data.wind.speed}m/s <br> 기압 - ${data.main.pressure}hPa <br> 습도 - ${data.main.humidity}% <br>`
+            
+            let icon = data.weather[0].icon
+            let iconUrl = `http://openweathermap.org/img/wn/${icon}@2x.png`
+            img.setAttribute('src', iconUrl)
+        }
+        seoulWeather()
+        async function busanWeather(){
+            const cityname = 'busan'
+            let res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityname}&appid=${API_KEY}&units=metric&lang=kr`)
+            let data = await res.json()
+            console.log(data)
+
+            local.innerHTML = `부산(${cityname}) 날씨 `
+            sum.innerHTML = `"${data.weather[0].description}"`
+            info.innerHTML = `<strong>현재온도 - ${data.main.temp}Cº</strong> <br> 최고온도 - ${data.main.temp_max}Cº <br> 최저온도 - ${data.main.temp_min}Cº <br> <br>
+                풍속 - ${data.wind.speed}m/s <br> 기압 - ${data.main.pressure}hPa <br> 습도 - ${data.main.humidity}% <br>`
+            
+            let icon = data.weather[0].icon
+            let iconUrl = `http://openweathermap.org/img/wn/${icon}@2x.png`
+            img.setAttribute('src', iconUrl)
+        }
+
+        async function incheonWeather(){
+            const cityname = 'incheon'
+            let res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityname}&appid=${API_KEY}&units=metric&lang=kr`)
+            let data = await res.json()
+            console.log(data)
+
+            local.innerHTML = `인천(${cityname}) 날씨 `
+            sum.innerHTML = `"${data.weather[0].description}"`
+            info.innerHTML = `<strong>현재온도 - ${data.main.temp}Cº</strong> <br> 최고온도 - ${data.main.temp_max}Cº <br> 최저온도 - ${data.main.temp_min}Cº <br> <br>
+                풍속 - ${data.wind.speed}m/s <br> 기압 - ${data.main.pressure}hPa <br> 습도 - ${data.main.humidity}% <br>`
+            
+            let icon = data.weather[0].icon
+            let iconUrl = `http://openweathermap.org/img/wn/${icon}@2x.png`
+            img.setAttribute('src', iconUrl)
+        }
+
+        async function daeguWeather(){
+            const cityname = 'daegu'
+            let res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityname}&appid=${API_KEY}&units=metric&lang=kr`)
+            let data = await res.json()
+            console.log(data)
+
+            local.innerHTML = `대구(${cityname}) 날씨 `
+            sum.innerHTML = `"${data.weather[0].description}"`
+            info.innerHTML = `<strong>현재온도 - ${data.main.temp}Cº</strong> <br> 최고온도 - ${data.main.temp_max}Cº <br> 최저온도 - ${data.main.temp_min}Cº <br> <br>
+                풍속 - ${data.wind.speed}m/s <br> 기압 - ${data.main.pressure}hPa <br> 습도 - ${data.main.humidity}% <br>`
+            
+            let icon = data.weather[0].icon
+            let iconUrl = `http://openweathermap.org/img/wn/${icon}@2x.png`
+            img.setAttribute('src', iconUrl)
+        }
+    </script>
+</body>
+</html>
