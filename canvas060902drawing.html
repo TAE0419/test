@@ -12,9 +12,10 @@
         }
         #toolbar{
             width: 100%; height: 70px;
-            background-color: rgb(227, 229, 235); gap: 30px;
+            background-color: rgb(255, 255, 255); gap: 30px;
             display: flex; justify-content: center; align-items: center;
             box-shadow: 0px 1px 15px rgba(0, 5, 70, 0.4);
+            z-index: 10;
         }
         #toolbar div{
             color: blue; font-weight: bold;
@@ -22,7 +23,7 @@
         }
         #toolbar div input{
             width: 100px; height: 30px; 
-            background-color: rgb(227, 229, 235);border: none;
+            background-color: rgb(255, 255, 255);border: none;
         }
         #toolbar div #lwidth{
              border: 2px solid blue; background-color: white; border-radius: 5px; padding: 10px;
@@ -39,9 +40,20 @@
             box-shadow: inset 2px 2px 5px rgba(0, 5, 70, 0.3);
             padding-left: 4px; padding-top: 4px;
         }
+        canvas{
+            z-index: 1;
+        }
         .text{
             position: absolute; bottom: 30px; right: 50px;
-            color :blue; font-size: 30px; font-weight: bold;
+            color :rgb(255, 255, 255); font-size: 30px; font-weight: bold;
+            z-index: 5;
+        }
+        .img{
+            position: absolute; top: 0;left: 0;
+            width: 100%; height: 100vh; overflow: hidden;
+        }
+        img{
+            width: 100%;height: 100%;object-fit: cover;
         }
     </style>
 </head>
@@ -65,6 +77,7 @@
         </div>
         <div class="text">PAINT BOARD</div>
         <canvas id="canvas"></canvas>
+        <div class='img'><img src="./image/jesus.jfif"/></div>
     </div>
     <script>
         const canvas = document.querySelector('canvas');
