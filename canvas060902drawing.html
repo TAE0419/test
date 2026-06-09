@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./reset.css"/>
+    <style>
+        #container{
+            width: 100%; 
+            display: flex; flex-direction: column; justify-content: center;align-items: center;
+        }
+        #toolbar{
+            width: 100%; height: 70px;
+            background-color: rgb(227, 229, 235); gap: 30px;
+            display: flex; justify-content: center; align-items: center;
+            box-shadow: 0px 1px 15px rgba(0, 5, 70, 0.4);
+        }
+        #toolbar div{
+            color: blue; font-weight: bold;
+            display: flex; align-items: center; gap: 5px;
+        }
+        #toolbar div input{
+            width: 100px; height: 30px; 
+            background-color: rgb(227, 229, 235);border: none;
+        }
+        #toolbar div #lwidth{
+             border: 2px solid blue; background-color: white; border-radius: 5px; padding: 10px;
+        }
+        #toolbar div button{
+            color: white; background-color: blue;
+            width: 100px; height: 30px; border-radius: 5px;
+        }
+        #reset{
+            margin-left: 1000px;
+        }
+        #toolbar div button:hover{
+            color: blue; background-color: white;
+            box-shadow: inset 2px 2px 5px rgba(0, 5, 70, 0.3);
+            padding-left: 4px; padding-top: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="toolbar">
+            <div>
+                <label for="lwidth">배경 색상 : </label>
+                <input type="color" id="backColor" value="#fff"/>
+            </div>
+            <div>
+                <label for="strokeColor">색상 : </label>
+                <input type="color" id="strokeColor" value="#000"/>
+            </div>
+            <div>
+                <label for="lwidth">선굵기 : </label>
+                <input type="number" id="lwidth" value="2" min="1" max="50"/>
+            </div>
+            <div><button id="reset">지우기</button></div>
+            <div><button id="downfile">저장하기</button></div>
+        </div>
+        <canvas id="canvas"></canvas>
+    </div>
+    <script>
+        const canvas = document.querySelector('canvas');
+        const toolbar = document.querySelector('#toolbar');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight - toolbar.offsetHeight;
+        
+        let canvasOffsetX = canvas.offsetLeft;
+        let canvasOffsetY = canvas.offsetTop;
+
+        let isDrawing = false;
+        let startX;
+        let startY;
+        let lineWidth;
+
+        const ctx = canvas.getContext('2d')
+
+        //선 색상, 선 굵기 변경
+        toolbar.addEventListener('change',function(e){
+            if(e.target.id === 'strokeColor'){
+                ctx.strokeStyle = e.target.value;
+            }
+            if(e.target.id==='lwidth'){
+                lineWidth = e.target.value                
+            }
+            if(e.target.id==='backColor'){
+                canvas.style.backgroundColor = e.target.value                
+            }
+        })
+
+        canvas.addEventListener('mousedown',function(e){
+            isDrawing = true
+            startX = e.clientX
+            startY = e.clientY
+        })
+        canvas.addEventListener('mousemove',function(e){
+            if(!isDrawing) return
+            ctx.lineWidth = lineWidth
+            ctx.lineCap = 'round'
+            ctx.lineTo(e.clientX, e.clientY - canvasOffsetY)
+            ctx.stroke()
+        })
+        canvas.addEventListener('mouseup',function(){
+            isDrawing = false
+            ctx.beginPath()
+        })
+
+        toolbar.addEventListener('click',function(e){
+            if(e.target.id==='reset'){
+                ctx.clearRect(0,0,canvas.width,canvas.height)
+            }
+            if(e.target.id ==='downfile'){
+                let link = document.createElement('a')
+                link.download = 'drawing.png' //만들어질 파일 이름
+                link.href = canvas.toDataURL('image/png') //캔버스의 데이터에 형식을 정해 가져오기
+                link.click()
+            }
+        })
+    </script>
+</body>
+</html>
