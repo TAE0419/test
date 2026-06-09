@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./reset.css"/>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <style>
+        header{
+            width: 100%;height:103px; background-color: rgb(255, 255, 255); 
+            padding: 30px 60px;
+        }
+        .logo{
+            width: 150px; height:23px; object-fit: cover;
+        }
+        .topBox{
+            width: 100%; height: 850px; overflow: hidden;
+            position: relative;
+        }
+        .slide{
+            width: 100%;height: 100%;
+            position: absolute; left: 0; top: 0;
+            display: none;
+        }
+        .slide img{
+            width: 100%; height: 100%; object-fit: cover;
+        }
+        .slide:first-child{
+            display: block;
+        }
+
+        .arrow{
+            width: 50px; height: 50px; background-color: rgba(255,255,255,0.2);
+            border-radius: 50%; z-index: 10;
+            position: absolute; top: 50%; transform: translateY(-50%);
+            color: white; font-size: 30px;
+        }
+        .prev{left: 30px;}
+        .next{right: 30px;}
+        .bars{
+            display: flex; align-items: center;
+            position: absolute; bottom: 50px; left: 50%; transform: translateX(-50%);
+        }
+        .bar{
+            width: 70px; height: 2px; background-color: rgba(0, 0, 0,0.3);
+        }
+        .bar.on{
+            height: 4px;background-color: rgba(0, 0, 0,0.7);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img class="logo" src="./image/simmons/imgi_36_logo..png"/>
+    </header>
+    <div class="topBox">
+        <div class="slide">
+            <img src="./image/simmons/imgi_3_02_시몬스_PC_banner_통합기획전_01.jpg"/>
+        </div>
+        <div class="slide">
+            <img src="./image/simmons/imgi_4_01_시몬스_PC_banner_온라인기획전.jpg"/>
+        </div>
+        <div class="slide">
+            <img src="./image/simmons/imgi_5_시몬스_PC_banner_온라인체험존.jpg"/>
+        </div>
+        <div class="slide">
+            <img src="./image/simmons/imgi_6_PC_banner_시몬스페이.jpg"/>
+        </div>
+        <div class="slide">
+            <img src="./image/simmons/imgi_7_03_시몬스_PC_banner_오프라인기획전_01-1.jpg"/>
+        </div>
+        <button class="arrow prev">&lt;</button>
+        <button class="arrow next">&gt;</button>
+        <div class="bars">
+            <div class="bar on"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+    </div>
+    <script>
+        let slides = $('.slide')
+        let bars = $('.bar')
+
+        let index = 0
+        let slideInterval
+        
+        function moveSlide(){
+            slides.stop(true,true).fadeOut(1000)
+            slides.eq(index).stop(true,true).fadeIn(1000)
+
+            bars.removeClass('on')
+            bars.eq(index).addClass('on')
+        }
+        function autoSlide(){
+            slideInterval=setInterval(function(){
+                index++
+                if(index>=slides.length){
+                    index=0
+                }
+                moveSlide()
+            },3000)
+        }
+        autoSlide()
+
+        $('.next').on('click',function(){
+            clearInterval(slideInterval)
+            index++
+            if(index>=slides.length){
+                index=0
+            }
+            moveSlide()
+            autoSlide()
+        })
+        $('.prev').on('click',function(){
+            clearInterval(slideInterval)
+            index--
+            if(index<0){
+                index=slides.length
+            }
+            moveSlide()
+            autoSlide()
+        })
+        bars.on('click',function(){
+            clearInterval(slideInterval)
+            index=$(this).index()
+            moveSlide()
+            autoSlide()
+        })
+    </script>
+</body>
+</html>
